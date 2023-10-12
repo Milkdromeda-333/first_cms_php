@@ -15,19 +15,15 @@ function getArticleById($id, $conn)
 
     $sql = "SELECT * 
             FROM article 
-            WHERE id = ?
+            WHERE id = :id
             ";
-    $stmt = mysqli_prepare($conn, $sql);
+    $stmt = $conn->prepare($sql);
 
-    if($stmt === false) {
-        echo mysqli_error($conn);
-    } else {
-        mysqli_stmt_bind_param($stmt, "i", $id);
+    
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
-        if(mysqli_stmt_execute($stmt)) {
-            $result = mysqli_stmt_get_result($stmt);
-            return mysqli_fetch_array($result, MYSQLI_ASSOC);
-        }
+    if($stmt->execute()) {
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
@@ -120,7 +116,7 @@ function naviagteToArticle($id)
         $protocol = "http";
     }
 
-    header("Location: $protocol://" . $_SERVER["HTTP_HOST"] . "./article.php?id=$id");
+    header("Location: $protocol://" . $_SERVER["HTTP_HOST"] . "/first_cms_php/article.php?id=$id");
 }
 
 /**

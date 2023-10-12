@@ -1,12 +1,16 @@
 <?php
 
-require "./includes/database.php";
+require "./classes/Database.php";
 require "./includes/article.php";
+require "./classes/Article.php";
 
-$conn = connectDB();
+
+
+$db = new Database();
+$conn = $db->getConn();
 
 if(isset($_GET["id"])) {
-    $article = getArticleById($_GET["id"], $conn);
+    $article = Article::getById($conn, $_GET["id"]);
 } else {
     $article = null;
 }
@@ -17,13 +21,13 @@ if(isset($_GET["id"])) {
 
 <?php require "./includes/header.php" ?>
 
-<?php if($article != null): ?>
+<?php if($article): ?>
 
-<h2><?= htmlspecialchars($article["title"]) ?></h2>
-<span><?= htmlspecialchars($article["published_at"]) ?></span>
-<p><?= htmlspecialchars($article["content"]) ?></p>
+<h2><?= htmlspecialchars($article->title) ?></h2>
+<span><?= htmlspecialchars($article->published_at) ?></span>
+<p><?= htmlspecialchars($article->content) ?></p>
 <a href="./hello.php">back</a>
-<a href="./edit-article.php?id=<?= $article["id"] ?>">edit</a>
+<a href="./edit-article.php?id=<?= $article->id ?>">edit</a>
 
 <?php else: ?>
 

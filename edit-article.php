@@ -2,47 +2,31 @@
 
 include "./includes/database.php";
 include "./includes/article.php";
+require "./classes/Article.php";
+include "./classes/Database.php";
+
 
 if(isset($_GET["id"])) {
-    $conn = connectDB();
+    $db = new Database();
+    $conn = $db->getConn();
     $id = $_GET["id"];
-    $article = getArticleById($id, $conn);
+
+    $article = Article::getById($conn, $id);
+
+    if(!$article) {
+        die("No article found");
+    }
     
-    if($article != null) {
-        $title = $article["title"];
-        $content = $article["content"];
-        $published_at = $article["published_at"];
+    if($_SERVER["REQUEST_METHOD"] === "POST") {
+        $article->title = $_POST["title"];
+        $article->content = $_POST["content"];
+        $article->published_at = $_POST["published_at"];
 
-        if($_SERVER["REQUEST_METHOD"] === "POST") {
-            $title = $_POST["title"];
-            $content = $_POST["content"];
-            $published_at = $_POST["published_at"];
-
-            $errors = validateArticle($title, $content, $published_at);
-
-            if(empty($errors)) {
-                $stmt = mysqli_prepare($conn, "UPDATE article SET title = ?, content = ?, published_at = ? WHERE id = ?");
-
-                if($stmt === false) {
-                    echo mysqli_error($conn);
-                } else {
-                    if($published_at === "") {
-                        $published_at = null;
-                    }
-                    $stmt->bind_param("sssi", $title, $content, $published_at, $id);
-
-                    if($stmt->execute()){
-                        naviagteToArticle($id);
-                    }
-                }
-
-                
-            }
+            
+        if($article->updateArticle($conn)){
+            naviagteToArticle($article->id);
         }
     }
-
-} else {
-    $article = null;
 }
 
     
@@ -55,9 +39,9 @@ if(isset($_GET["id"])) {
 <form method="POST">
     <?php require "./includes/article-form.php" ?>
     <button>Save</button>
+    <a href="/first_cms_php/article.php?id=<?= $article->id?>">go back</a>
 </form>
 
-<a href="./article.php?id=<?= $article["id"]?>">go back</a>
 <?php else: ?>
 
 <span>No article found..</span>

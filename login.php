@@ -1,5 +1,7 @@
 <?php
 
+require "./includes/article.php";
+
 session_start();
 
 if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -17,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <?php require "./includes/header.php" ?>
 <h1>Login!</h1>
-<form method="POST" action="/login.php">
+<form method="POST" action="./login.php">
     <?php if(!empty($error)): ?>
         <span>Wrong credentials!</span>
     <?php endif; ?>
