@@ -18,4 +18,5 @@ if (ini_get("session.use_cookies")) {
 
 // Finally, destroy the session.
 session_destroy();
+require "./includes/article.php";
 relocate("hello");

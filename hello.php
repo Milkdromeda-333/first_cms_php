@@ -1,7 +1,7 @@
 <?php
 
 require "./classes/Database.php";
-require "./includes/auth.php";
+require "./classes/Auth.php";
 require "./classes/Article.php";
 
 
@@ -18,7 +18,7 @@ $articles = Article::getAll($conn);
 
 <?php require "./includes/header.php" ?>
 
-<?php if(isLoggedIn()): ?>
+<?php if(Auth::isLoggedIn()): ?>
     <p>You are authenticated</p>
     <a href="./logout.php">logout</a>
 
