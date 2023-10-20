@@ -1,14 +1,10 @@
 <?php 
 
-include "./includes/database.php";
-include "./includes/article.php";
-require "./classes/Article.php";
-include "./classes/Database.php";
-
+require "./includes/init.php";
 
 if(isset($_GET["id"])) {
-    $db = new Database();
-    $conn = $db->getConn();
+    $conn = require "./includes/db.php";
+
     $id = $_GET["id"];
 
     $article = Article::getById($conn, $id);

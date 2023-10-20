@@ -1,21 +1,12 @@
 <?php 
-require './includes/header.php'; 
-require 'includes/database.php';
-require 'includes/article.php';
-require 'includes/auth.php';
-require 'classes/Database.php';
-require 'classes/Article.php';
+require "./includes/init.php";
 
-session_start();
-if(!isLoggedIn()) {
-    die("unauthorized");
-}
+Auth::requireLogin();
 
 $article = new Article();
 
 if($_SERVER["REQUEST_METHOD"] === "POST") {
-    $db = new Database();
-    $conn = $db->getConn();
+    $conn = require "./includes/db.php";
 
     $article->title = $_POST["title"];
     $article->content = $_POST["content"];
@@ -26,21 +17,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
         
         naviagteToArticle($article->id);
     }
-
-//    $sql =  "INSERT INTO article (title, content, published_at)
-//         VALUES ('" . $_POST['title'] . "','"
-//                    . $_POST['content'] . "','"
-//                    . $_POST['published_at'] . "')";
-                       
-//     $results = mysqli_query($conn, $sql);
-
-//     if($results == false) {
-//         echo mysqli_error($conn);
-//     } else {
-//         $id = mysqli_insert_id($conn);
-//         echo "Inserted record with id: $id";
-//     }
 }
+
 ?>
 
 <!-- START OUTPUT -->

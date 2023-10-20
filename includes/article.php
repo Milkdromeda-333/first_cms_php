@@ -119,13 +119,3 @@ function naviagteToArticle($id)
     header("Location: $protocol://" . $_SERVER["HTTP_HOST"] . "/first_cms_php/article.php?id=$id");
 }
 
-/**
- * Navigates a user to a page
- * 
- * @param string endpoint of url where user will be navigated to
- * @return string sends a header back that will navigate a user to specified url
- */
-function relocate($location)
-{
-    return header("Location: ./$location.php");
-}

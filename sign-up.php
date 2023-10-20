@@ -1,13 +1,13 @@
 <?php
 
+require "./includes/init.php";
+
 if($_SERVER["REQUEST_METHOD"] === "POST") {
-    require "./classes/Database.php";
-    require "./classes/User.php";
     
-    $db = new Database();
-    $conn = $db->getConn();
+    $conn = require "./includes/db.php";
+
     if(User::signUp($conn, $_POST["username"], $_POST["password"])) {
-        relocate("hello");
+         Url::relocate("hello");
     } else {
         $error = "There was a problem signing you up.";
     }

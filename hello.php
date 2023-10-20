@@ -1,14 +1,7 @@
 <?php
 
-require "./classes/Database.php";
-require "./classes/Auth.php";
-require "./classes/Article.php";
-
-
-session_start();
-
-$db = new Database();
-$conn = $db->getConn();
+require "./includes/init.php";
+$conn = require "./includes/db.php";
 
 $articles = Article::getAll($conn);
 
